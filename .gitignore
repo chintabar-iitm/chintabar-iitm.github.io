@@ -22,3 +22,8 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Local AI/editor tooling
+.vscode/
+AGENTS.md
+CLAUDE.md
