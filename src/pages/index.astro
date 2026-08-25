@@ -1,17 +1,76 @@
 ---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getPublishedArticles, getFeaturedArticles } from "../lib/content";
 
+const featured = await getFeaturedArticles();
+const recent = (await getPublishedArticles()).slice(0, 10);
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="Chintabar">
+  <section class="hero">
+    <h1>Chintabar</h1>
+    <p>Articles, statements, and announcements.</p>
+  </section>
+
+  {featured.length > 0 && (
+    <section class="featured">
+      <h2>Featured</h2>
+      <ul class="article-list">
+        {featured.map((article) => (
+          <li>
+            <a href={`/articles/${article.data.slug}`}>
+              <span class="article-type">{article.data.type}</span>
+              <h3>{article.data.title}</h3>
+              <p>{article.data.excerpt}</p>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  <section class="recent">
+    <h2>Recent</h2>
+    {recent.length === 0 && <p>No articles published yet.</p>}
+    <ul class="article-list">
+      {recent.map((article) => (
+        <li>
+          <a href={`/articles/${article.data.slug}`}>
+            <span class="article-type">{article.data.type}</span>
+            <h3>{article.data.title}</h3>
+            <p>{article.data.excerpt}</p>
+            <time datetime={article.data.publishedAt.toISOString()}>
+              {article.data.publishedAt.toDateString()}
+            </time>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    margin-bottom: 2rem;
+  }
+  .article-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 1.5rem;
+  }
+  .article-list a {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid #e2e2e2;
+    border-radius: 8px;
+    padding: 1rem;
+  }
+  .article-type {
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    color: #666;
+  }
+</style>

@@ -1,0 +1,79 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Chintabar" } = Astro.props;
+const siteTitle = "Chintabar";
+const pageTitle = title === siteTitle ? siteTitle : `${title} | ${siteTitle}`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <title>{pageTitle}</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="site-logo" href="/">{siteTitle}</a>
+      <nav class="site-nav">
+        <a href="/">Home</a>
+        <a href="/articles">Articles</a>
+        <a href="/statements">Statements</a>
+        <a href="/announcements">Announcements</a>
+      </nav>
+    </header>
+
+    <main class="site-main">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <p>&copy; {new Date().getFullYear()} {siteTitle}.</p>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid #e2e2e2;
+  }
+  .site-logo {
+    font-weight: 700;
+    font-size: 1.25rem;
+    text-decoration: none;
+    color: inherit;
+  }
+  .site-nav {
+    display: flex;
+    gap: 1.5rem;
+  }
+  .site-nav a {
+    text-decoration: none;
+    color: inherit;
+  }
+  .site-main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem;
+    min-height: 60vh;
+  }
+  .site-footer {
+    text-align: center;
+    padding: 2rem;
+    border-top: 1px solid #e2e2e2;
+    color: #666;
+    font-size: 0.875rem;
+  }
+</style>
